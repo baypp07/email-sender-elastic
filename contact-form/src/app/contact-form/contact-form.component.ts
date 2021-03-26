@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {SendemailService} from "../sendemail.service";
-import { FormControl, Validators, NgForm } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators} from "@angular/forms";
 import './../../assets/smtp.js';
 declare let Email: any;
 
@@ -10,20 +10,31 @@ declare let Email: any;
   styleUrls: ['./contact-form.component.css']
 })
 export class ContactFormComponent implements OnInit {
-  surname:string;;
-  name:string;
-  email:string;
-  phone:number;
-  message:string;;
+  registerForm: FormGroup;
+  submitted = false;
 
   constructor(
+    private formBuilder: FormBuilder,
     public http: SendemailService
   ) { }
 
   ngOnInit() {
+    this.registerForm = this.formBuilder.group({
+      name: ["", Validators.required],
+      surname: ["", Validators.required],
+      email: ["", Validators.required],
+      phone: ["", Validators.required],
+      message: ["", Validators.required],
+    });
   }
-  onSubmit(f: NgForm){
-    const user = this.name;
+  get f() {
+    return this.registerForm.controls;
+  }
+  onSubmit(){
+    this.submitted = true;
+    if (this.registerForm.invalid) {
+      return;
+    }
     Email.send({
       Host : 'smtp.elasticemail.com',
       Username : 'bayppgbox@gmail.com',
@@ -32,23 +43,18 @@ export class ContactFormComponent implements OnInit {
       From : 'bayppgbox@gmail.com',
       Subject : 'test email sender',
       Body : `
-      <i>This is sent as a feedback from my resume page.</i> <br/> <b>Name: </b>${this.name} <br /> <b>Email: </b>${this.email}<br /> <b>Subject: </b>${this.phone}<br /> <b>Message:</b> <br /> ${this.message} <br><br> <b>~End of Message.~</b> `
-      }).then( message => {alert(message); f.resetForm(); } );
+      <i>This is sent as a feedback from my resume page.</i>
+       <br/> <b>Name: </b>${this.registerForm.value.surname} 
+       <br/> <b>Prénom: </b>${this.registerForm.value.name} 
+       <br /> <b>Email: </b>${this.registerForm.value.email}
+       <br /> <b>Subject: </b>${this.registerForm.value.phone}
+       <br /> <b>Message:</b> <br /> ${this.registerForm.value.message} 
+       <br><br> <b>~End of Message.~</b> `
+      }).then( message => {alert(message);
+        this.submitted = false;
+        this.registerForm.reset();} );
   }
   
 
 }
-    // `my surname is ${this.surname}. My name is ${this.name}. My email is ${this.email}. My phone is ${this.phone}. My message is "${this.message}".`; 
-    // alert(user);
-    // this.http.SendEmail("http://localhost:3000/", user).subscribe(
-    //   data => {
-    //     let res:any = data;
-    //     console.log(
-    //       `👏 > 👏 > 👏 > 👏 ${user} is successfully ${res.messageId}`
-    //     );
-    //   },
-    //   err=> {
-    //     console.log(err);
-        
-    //   }
-    // )
+

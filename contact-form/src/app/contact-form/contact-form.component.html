@@ -9,36 +9,54 @@
       </svg>
     </div>
 
-    <form #f="ngForm" (ngSubmit)="onSubmit(f)" id="contact_form">
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" id="contact_form">
   
        <!-- Prénome -->
       <div class="name">
         <label for="name"> Nom </label>
-        <input type="text" placeholder="BAYPP" name="name" id="surname_input" required [(ngModel)]="surname">
+        <input type="text" placeholder="BAYPP" id="surname_input" formControlName="surname" [ngClass]="{ 'is-invalid': submitted && f.surname.errors}">
+      
+        <div class="error" *ngIf="submitted && f.surname.errors" class="invalid-reedback">
+          <div *ngIf="f.surname?.errors.required">Nom de famille obligatoire</div>
+        </div>
       </div>
   
       <!-- nom -->
       <div class="name">
        <label class="label-name" for="name"> Prénom</label>
-        <input type="text" placeholder="Baypp" name="name" id="name_input" required [(ngModel)]="name" >
+        <input type="text" placeholder="Baypp" id="name_input" formControlName="name" [ngClass]="{ 'is-invalid': submitted && f.name.errors}" >
+        <div *ngIf="submitted && f.name.errors" class="invalid-reedback">
+          <div *ngIf="f.name?.errors.required">prénom obligatoire</div>
+        </div>
       </div>
+      
   
       <!-- email -->
       <div class="email">
         <label for="email"> Adresse mail </label>
-        <input type="email" placeholder="baypp@hotmail.com" name="email" id="email_input" required [(ngModel)]="email">
+        <input type="email" placeholder="baypp@hotmail.com" id="email_input"  formControlName="email" [ngClass]="{ 'is-invalid': submitted && f.email.errors}">
+        <div *ngIf="submitted && f.email.errors" class="invalid-reedback">
+          <div *ngIf="f.email?.errors.required">Email obligatoire</div>
+        </div>
       </div>
   
       <!-- Téléphone-->
       <div class="telephone">
         <label for="name"> Téléphone </label>
-        <input type="text" placeholder="06 66 66 66 66 "name="telephone" id="telephone_input" required [(ngModel)]="phone">
+        <input type="text" placeholder="06 66 66 66 66 " id="telephone_input"  formControlName="phone" [ngClass]="{ 'is-invalid': submitted && f.phone.errors}">
+        <div *ngIf="submitted && f.phone.errors" class="invalid-reedback">
+          <div *ngIf="f.phone?.errors.required">Telephone obligatoire</div>
+        </div>
       </div>
   
       <!-- message-->
       <div class="message">
         <label for="message"> Parlez nous de votre projet</label>
-        <textarea name="message" [(ngModel)]="message" placeholder="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining ess" id="message_input" cols="30" rows="5" required></textarea>
+        <div *ngIf="submitted && f.message.errors" class="invalid-reedback">
+          <div *ngIf="f.message?.errors.required">Message obligatoire</div>
+        </div>
+        <textarea formControlName="message" [ngClass]="{ 'is-invalid': submitted && f.message.errors}" placeholder="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining ess" id="message_input" cols="30" rows="5" ></textarea>
+        
       </div>
   
       <!--Valider  -->
