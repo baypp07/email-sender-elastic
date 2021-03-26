@@ -10,12 +10,11 @@
     </div>
 
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" id="contact_form">
-  
+      
        <!-- Prénome -->
       <div class="name">
         <label for="name"> Nom </label>
         <input type="text" placeholder="BAYPP" id="surname_input" formControlName="surname" [ngClass]="{ 'is-invalid': submitted && f.surname.errors}">
-      
         <div class="error" *ngIf="submitted && f.surname.errors" class="invalid-reedback">
           <div *ngIf="f.surname?.errors.required">Nom de famille obligatoire</div>
         </div>
@@ -37,6 +36,7 @@
         <input type="email" placeholder="baypp@hotmail.com" id="email_input"  formControlName="email" [ngClass]="{ 'is-invalid': submitted && f.email.errors}">
         <div *ngIf="submitted && f.email.errors" class="invalid-reedback">
           <div *ngIf="f.email?.errors.required">Email obligatoire</div>
+          <div *ngIf="f.email?.errors.email">Email devrait être un vai email</div>
         </div>
       </div>
   

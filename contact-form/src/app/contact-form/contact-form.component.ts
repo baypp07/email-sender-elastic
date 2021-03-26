@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {SendemailService} from "../sendemail.service";
-import { FormBuilder, FormGroup, Validators} from "@angular/forms";
+import { FormBuilder, FormGroup, Validators, FormControl} from "@angular/forms";
 import './../../assets/smtp.js';
 declare let Email: any;
 
@@ -13,6 +13,8 @@ export class ContactFormComponent implements OnInit {
   registerForm: FormGroup;
   submitted = false;
 
+      emailFormControl = new FormControl('', [Validators.required,Validators.email,]);
+
   constructor(
     private formBuilder: FormBuilder,
     public http: SendemailService
@@ -22,7 +24,7 @@ export class ContactFormComponent implements OnInit {
     this.registerForm = this.formBuilder.group({
       name: ["", Validators.required],
       surname: ["", Validators.required],
-      email: ["", Validators.required],
+      email: ["", [Validators.required, Validators.email,Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
       phone: ["", Validators.required],
       message: ["", Validators.required],
     });
@@ -50,7 +52,7 @@ export class ContactFormComponent implements OnInit {
        <br /> <b>Subject: </b>${this.registerForm.value.phone}
        <br /> <b>Message:</b> <br /> ${this.registerForm.value.message} 
        <br><br> <b>~End of Message.~</b> `
-      }).then( message => {alert(message);
+      }).then( message => {alert("Sucess!!");
         this.submitted = false;
         this.registerForm.reset();} );
   }

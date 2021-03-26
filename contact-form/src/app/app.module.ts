@@ -7,6 +7,8 @@ import { ContactFormComponent } from './contact-form/contact-form.component';
 import { from } from 'rxjs';
 import { HttpClientModule } from '@angular/common/http';
 import { SendemailService} from './sendemail.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MaterialModule } from './material/material.module';
 
 @NgModule({
   declarations: [
@@ -19,6 +21,8 @@ import { SendemailService} from './sendemail.service';
     FormsModule, 
     ReactiveFormsModule,
     HttpClientModule,
+    BrowserAnimationsModule,
+    MaterialModule,
   ],
   providers: [SendemailService],
   bootstrap: [AppComponent]
